@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAISON VÉRA | Contemporary Luxury & Editorial Fashion</title>
+
+    <!-- Google Fonts: Cormorant Garamond (Luxury Editorial Serif) & Plus Jakarta Sans (Clean Modern UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Theme Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        ivory: {
+                            50: '#FCFBF9',
+                            100: '#F7F4EF',
+                            200: '#EDE7DD',
+                            300: '#DFD6C7',
+                        },
+                        obsidian: {
+                            700: '#2E2C2A',
+                            800: '#1C1B1A',
+                            900: '#111010',
+                        },
+                        champagne: {
+                            400: '#C8A97E',
+                            500: '#B59262',
+                            600: '#9A784B',
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 5s ease-in-out infinite 1.5s',
+                        'marquee': 'marquee 28s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Variables for Design Tokens & Animation Timings */
+        :root {
+            --bg-canvas: #FCFBF9;
+            --bg-surface: #F7F4EF;
+            --text-ink: #111010;
+            --text-muted: #5C5852;
+            --accent-gold: #B59262;
+            --border-hairline: rgba(17, 16, 16, 0.1);
+            --transition-editorial: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-ink);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Minimal Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F4EF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1C1B1A;
+        }
+
+        /* Glassmorphism Navigation & Overlays */
+        .glass-header {
+            background: rgba(252, 251, 249, 0.84);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border-hairline);
+        }
+
+        .glass-badge {
+            background: rgba(252, 251, 249, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* Preloader */
+        #loader-screen {
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s ease;
+        }
+        #loader-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Hero Staggered Entrance */
+        .hero-stagger {
+            opacity: 0;
+            transform: translateY(28px);
+            animation: editorialRise 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .stagger-1 { animation-delay: 0.15s; }
+        .stagger-2 { animation-delay: 0.3s; }
+        .stagger-3 { animation-delay: 0.45s; }
+        .stagger-4 { animation-delay: 0.6s; }
+
+        @keyframes editorialRise {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Nav Underline Indicator */
+        .nav-item {
+            position: relative;
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 1.5px;
+            background-color: #111010;
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-item:hover::after,
+        .nav-item.active::after {
+            width: 100%;
+        }
+
+        /* Product Card Hover Micro-Interactions */
+        .product-card:hover .product-img {
+            transform: scale(1.07);
+        }
+        .product-card:hover .quick-add-bar {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Animated Contact Input Border */
+        .editorial-input {
+            border-bottom: 1px solid rgba(17, 16, 16, 0.25);
+            transition: border-color 0.35s ease, padding-left 0.35s ease;
+        }
+        .editorial-input:focus {
+            border-bottom-color: #111010;
+            padding-left: 6px;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-obsidian-900 selection:text-ivory-50">
+
+    <!-- ==================== PRELOADER ==================== -->
+    <div id="loader-screen" class="fixed inset-0 z-50 bg-ivory-50 flex flex-col items-center justify-center">
+        <div class="text-center">
+            <p class="font-serif text-3xl sm:text-4xl tracking-[0.28em] font-semibold text-obsidian-900 uppercase">
+                MAISON VÉRA
+            </p>
+            <div class="w-40 h-[1.5px] bg-ivory-300 mx-auto mt-4 overflow-hidden">
+                <div class="w-1/2 h-full bg-obsidian-900 animate-pulse"></div>
+            </div>
+            <p class="text-[11px] uppercase tracking-[0.3em] text-obsidian-700/70 mt-3">Autumn / Winter Atelier</p>
+        </div>
+    </div>
+
+    <!-- ==================== ANNOUNCEMENT BAR ==================== -->
+    <div class="bg-obsidian-900 text-ivory-100 text-[11px] tracking-[0.2em] uppercase py-2.5 px-4 text-center font-medium">
+        Complimentary Express Shipping on Orders Over $150 &nbsp;•&nbsp; <a href="#offers" class="underline underline-offset-4 hover:text-champagne-400 transition-colors">Explore Seasonal Offers</a>
+    </div>
+
+    <!-- ==================== 3. STICKY NAVIGATION BAR ==================== -->
+    <header id="site-header" class="sticky top-0 z-40 glass-header transition-all duration-300">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between" aria-label="Main Navigation">
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-toggle" aria-label="Open Navigation Menu" aria-expanded="false" class="lg:hidden p-2.5 text-obsidian-900 hover:text-champagne-600 transition-colors">
+                <i class="fa-solid fa-bars text-lg" id="mobile-icon"></i>
+            </button>
+
+            <!-- Brand Wordmark -->
+            <a href="#home" class="font-serif text-2xl sm:text-3xl font-bold tracking-[0.2em] text-obsidian-900 uppercase">
+                MAISON VÉRA
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <ul class="hidden lg:flex items-center space-x-9 text-xs uppercase tracking-[0.18em] font-semibold text-obsidian-800">
+                <li><a href="#home" class="nav-item active py-1">Home</a></li>
+                <li><a href="#products" data-nav-filter="men" class="nav-item py-1 quick-filter-link">Men</a></li>
+                <li><a href="#products" data-nav-filter="women" class="nav-item py-1 quick-filter-link">Women</a></li>
+                <li><a href="#collections" class="nav-item py-1">Collections</a></li>
+                <li><a href="#offers" class="nav-item py-1">Offers</a></li>
+                <li><a href="#contact" class="nav-item py-1">Contact</a></li>
+            </ul>
+
+            <!-- Right Icons: Wishlist & Shopping Bag -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <!-- Wishlist Drawer Trigger -->
+                <button id="wishlist-open-btn" aria-label="Open Wishlist" class="relative p-2.5 rounded-full hover:bg-ivory-200/70 text-obsidian-900 transition-colors">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                    <span id="wishlist-count" class="absolute top-1 right-0.5 w-4 h-4 rounded-full bg-champagne-500 text-white text-[10px] font-bold flex items-center justify-center">0</span>
+                </button>
+
+                <!-- Shopping Bag Drawer Trigger -->
+                <button id="cart-open-btn" aria-label="Open Shopping Bag" class="relative p-2.5 rounded-full hover:bg-ivory-200/70 text-obsidian-900 transition-colors flex items-center space-x-1.5">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-count" class="w-5 h-5 rounded-full bg-obsidian-900 text-ivory-50 text-[10px] font-bold flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Slide-Down Navigation -->
+        <div id="mobile-drawer" class="hidden lg:hidden bg-ivory-50 border-b border-ivory-300 px-6 py-6 shadow-xl">
+            <ul class="flex flex-col space-y-4 text-sm uppercase tracking-[0.18em] font-semibold text-obsidian-900">
+                <li><a href="#home" class="mobile-link block py-1.5 hover:text-champagne-600">Home</a></li>
+                <li><a href="#products" data-nav-filter="men" class="mobile-link quick-filter-link block py-1.5 hover:text-champagne-600">Men</a></li>
+                <li><a href="#products" data-nav-filter="women" class="mobile-link quick-filter-link block py-1.5 hover:text-champagne-600">Women</a></li>
+                <li><a href="#collections" class="mobile-link block py-1.5 hover:text-champagne-600">Collections</a></li>
+                <li><a href="#offers" class="mobile-link block py-1.5 hover:text-champagne-600">Offers</a></li>
+                <li><a href="#contact" class="mobile-link block py-1.5 hover:text-champagne-600">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- ==================== 2. EDITORIAL HERO SECTION ==================== -->
+        <section id="home" class="relative min-h-[90vh] flex items-center bg-ivory-100 overflow-hidden py-14 lg:py-20">
+            <!-- Subtle Ambient Background Accent -->
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-ivory-200/50 hidden lg:block pointer-events-none" aria-hidden="true"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+                    <!-- Left Editorial Copy -->
+                    <div class="lg:col-span-6 text-center lg:text-left">
+                        <div class="hero-stagger inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white/90 border border-obsidian-900/10 text-[11px] font-bold uppercase tracking-[0.25em] text-obsidian-800 mb-6 shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-champagne-500"></span>
+                            <span>New Season Collection • 2026</span>
+                        </div>
+
+                        <h1 class="hero-stagger stagger-1 font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-[5.25rem] font-semibold text-obsidian-900 leading-[1.04] tracking-tight mb-5">
+                            Discover Your <span class="italic font-normal text-champagne-600">Style</span>
+                        </h1>
+
+                        <p class="hero-stagger stagger-2 text-sm sm:text-base uppercase tracking-[0.22em] font-semibold text-obsidian-700 mb-5">
+                            Explore the latest trends in fashion.
+                        </p>
+
+                        <p class="hero-stagger stagger-3 text-obsidian-700/85 text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0 mb-9">
+                            Architectural tailoring meets effortless fluidity. Crafted from organic Italian linens, raw silks, and heavyweight structured cottons designed for the modern wardrobe.
+                        </p>
+
+                        <div class="hero-stagger stagger-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                            <a href="#products" class="w-full sm:w-auto px-9 py-4 bg-obsidian-900 hover:bg-obsidian-700 text-ivory-50 text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-lg hover:-translate-y-0.5 flex items-center justify-center space-x-3">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                            </a>
+                            <a href="#collections" class="w-full sm:w-auto px-9 py-4 bg-transparent hover:bg-white text-obsidian-900 border border-obsidian-900/30 text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center">
+                                <span>Explore Collections</span>
+                            </a>
+                        </div>
+
+                        <!-- Editorial Highlights -->
+                        <div class="hero-stagger stagger-4 mt-12 pt-8 border-t border-obsidian-900/10 grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0">
+                            <div>
+                                <p class="font-serif text-2xl sm:text-3xl font-bold text-obsidian-900">120+</p>
+                                <p class="text-[11px] uppercase tracking-wider text-obsidian-700/75 mt-0.5">Curated Pieces</p>
+                            </div>
+                            <div>
+                                <p class="font-serif text-2xl sm:text-3xl font-bold text-obsidian-900">100%</p>
+                                <p class="text-[11px] uppercase tracking-wider text-obsidian-700/75 mt-0.5">Natural Fabrics</p>
+                            </div>
+                            <div>
+                                <p class="font-serif text-2xl sm:text-3xl font-bold text-obsidian-900">48h</p>
+                                <p class="text-[11px] uppercase tracking-wider text-obsidian-700/75 mt-0.5">Global Express</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Campaign Image Collage -->
+                    <div class="lg:col-span-6 relative">
+                        <div class="relative max-w-lg mx-auto lg:max-w-none">
+                            <!-- Main Tall Editorial Portrait -->
+                            <div class="relative overflow-hidden rounded-t-[10rem] rounded-b-2xl shadow-2xl border-8 border-white aspect-[3/4]">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85" 
+                                    alt="High-fashion editorial model wearing tailored cream trench coat" 
+                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
+                                    onerror="this.src='https://placehold.co/800x1050/EDE7DD/111010?text=MAISON+VERA+CAMPAIGN'"
+                                >
+                            </div>
+
+                            <!-- Secondary Overlapping Lookbook Frame -->
+                            <div class="hidden sm:block animate-float-slow absolute -left-8 bottom-12 w-44 md:w-52 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=500&q=80" 
+                                    alt="Minimalist monochrome streetwear look" 
+                                    class="w-full h-60 object-cover"
+                                    onerror="this.src='https://placehold.co/400x500/1C1B1A/FCFBF9?text=Editorial+Look'"
+                                >
+                            </div>
+
+                            <!-- Floating Glass Campaign Tag -->
+                            <div class="animate-float-delayed glass-badge absolute -right-3 sm:-right-6 top-14 px-5 py-4 rounded-2xl shadow-xl max-w-[210px]">
+                                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-champagne-600">Lookbook 04</p>
+                                <p class="font-serif text-lg font-bold text-obsidian-900 leading-tight mt-0.5">The Sculpted Linen Edit</p>
+                                <a href="#collections" class="inline-flex items-center space-x-1 text-xs font-semibold text-obsidian-900 underline underline-offset-4 mt-2 hover:text-champagne-600">
+                                    <span>View Edit</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 4. FEATURED COLLECTIONS SECTION ==================== -->
+        <section id="collections" class="py-24 bg-ivory-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 reveal-up">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-champagne-600 block mb-2">Curated Edits</span>
+                        <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-obsidian-900">
+                            Featured Collections
+                        </h2>
+                    </div>
+                    <p class="text-obsidian-700/80 text-sm sm:text-base max-w-md mt-3 md:mt-0">
+                        Six distinct seasonal capsules tailored to elevate every occasion from sunlit afternoons to evening galas.
+                    </p>
+                </div>
+
+                <!-- 6 Collections Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Collection 1: New Arrivals -->
+                    <article class="reveal-up group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-obsidian-900">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=85" alt="New Arrivals Fashion Collection" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/1C1B1A/FCFBF9?text=New+Arrivals'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900/90 via-obsidian-900/25 to-transparent"></div>
+                        <div class="absolute inset-0 p-7 flex flex-col justify-end text-ivory-50">
+                            <span class="text-[11px] uppercase tracking-[0.22em] text-champagne-400 font-semibold mb-1">Just Landed</span>
+                            <h3 class="font-serif text-3xl font-semibold mb-2">New Arrivals</h3>
+                            <p class="text-ivory-200/85 text-sm mb-5 line-clamp-2">Fresh runway silhouettes in muted earth tones and crisp organic cottons.</p>
+                            <a href="#products" data-nav-filter="all" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.2em] text-white border-b border-white/60 pb-1.5 w-max group-hover:border-champagne-400 group-hover:text-champagne-400 transition-colors">
+                                <span>Explore Collection</span>
+                                <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Collection 2: Trending Styles -->
+                    <article class="reveal-up group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-obsidian-900">
+                        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=85" alt="Trending Styles Fashion Collection" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/1C1B1A/FCFBF9?text=Trending+Styles'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900/90 via-obsidian-900/25 to-transparent"></div>
+                        <div class="absolute inset-0 p-7 flex flex-col justify-end text-ivory-50">
+                            <span class="text-[11px] uppercase tracking-[0.22em] text-champagne-400 font-semibold mb-1">Most Coveted</span>
+                            <h3 class="font-serif text-3xl font-semibold mb-2">Trending Styles</h3>
+                            <p class="text-ivory-200/85 text-sm mb-5 line-clamp-2">Statement outerwear and relaxed tailoring favored by stylists worldwide.</p>
+                            <a href="#products" data-nav-filter="women" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.2em] text-white border-b border-white/60 pb-1.5 w-max group-hover:border-champagne-400 group-hover:text-champagne-400 transition-colors">
+                                <span>Explore Collection</span>
+                                <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Collection 3: Casual Wear -->
+                    <article class="reveal-up group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-obsidian-900">
+                        <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&w=800&q=85" alt="Casual Wear Fashion Collection" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/1C1B1A/FCFBF9?text=Casual+Wear'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900/90 via-obsidian-900/25 to-transparent"></div>
+                        <div class="absolute inset-0 p-7 flex flex-col justify-end text-ivory-50">
+                            <span class="text-[11px] uppercase tracking-[0.22em] text-champagne-400 font-semibold mb-1">Everyday Ease</span>
+                            <h3 class="font-serif text-3xl font-semibold mb-2">Casual Wear</h3>
+                            <p class="text-ivory-200/85 text-sm mb-5 line-clamp-2">Elevated essentials, heavyweight tees, and relaxed denim for effortless days.</p>
+                            <a href="#products" data-nav-filter="men" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.2em] text-white border-b border-white/60 pb-1.5 w-max group-hover:border-champagne-400 group-hover:text-champagne-400 transition-colors">
+                                <span>Explore Collection</span>
+                                <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Collection 4: Formal Wear -->
+                    <article class="reveal-up group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-obsidian-900">
+                        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=85" alt="Formal Wear Tailored Collection" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/1C1B1A/FCFBF9?text=Formal+Wear'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900/90 via-obsidian-900/25 to-transparent"></div>
+                        <div class="absolute inset-0 p-7 flex flex-col justify-end text-ivory-50">
+                            <span class="text-[11px] uppercase tracking-[0.22em] text-champagne-400 font-semibold mb-1">Sartorial Precision</span>
+                            <h3 class="font-serif text-3xl font-semibold mb-2">Formal Wear</h3>
+                            <p class="text-ivory-200/85 text-sm mb-5 line-clamp-2">Sharp Italian wool blazers, silk evening dresses, and structured trousers.</p>
+                            <a href="#products" data-nav-filter="men" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.2em] text-white border-b border-white/60 pb-1.5 w-max group-hover:border-champagne-400 group-hover:text-champagne-400 transition-colors">
+                                <span>Explore Collection</span>
+                                <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Collection 5: Summer Collection -->
+                    <article class="reveal-up group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-obsidian-900">
+                        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=800&q=85" alt="Summer Linen Collection" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/1C1B1A/FCFBF9?text=Summer+Collection'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900/90 via-obsidian-900/25 to-transparent"></div>
+                        <div class="absolute inset-0 p-7 flex flex-col justify-end text-ivory-50">
+                            <span class="text-[11px] uppercase tracking-[0.22em] text-champagne-400 font-semibold mb-1">Resort & Sun</span>
+                            <h3 class="font-serif text-3xl font-semibold mb-2">Summer Collection</h3>
+                            <p class="text-ivory-200/85 text-sm mb-5 line-clamp-2">Breathable European flax linens and airy sundresses crafted for coastal escapes.</p>
+                            <a href="#products" data-nav-filter="women" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.2em] text-white border-b border-white/60 pb-1.5 w-max group-hover:border-champagne-400 group-hover:text-champagne-400 transition-colors">
+                                <span>Explore Collection</span>
+                                <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- Collection 6: Winter Collection -->
+                    <article class="reveal-up group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-obsidian-900">
+                        <img src="https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=800&q=85" alt="Winter Cashmere & Wool Collection" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-700" onerror="this.src='https://placehold.co/600x750/1C1B1A/FCFBF9?text=Winter+Collection'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian-900/90 via-obsidian-900/25 to-transparent"></div>
+                        <div class="absolute inset-0 p-7 flex flex-col justify-end text-ivory-50">
+                            <span class="text-[11px] uppercase tracking-[0.22em] text-champagne-400 font-semibold mb-1">Cold Weather Luxury</span>
+                            <h3 class="font-serif text-3xl font-semibold mb-2">Winter Collection</h3>
+                            <p class="text-ivory-200/85 text-sm mb-5 line-clamp-2">Double-faced cashmere overcoats, merino knits, and sculpted winter layers.</p>
+                            <a href="#products" data-nav-filter="outerwear" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.2em] text-white border-b border-white/60 pb-1.5 w-max group-hover:border-champagne-400 group-hover:text-champagne-400 transition-colors">
+                                <span>Explore Collection</span>
+                                <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 5. CLOTHING CATEGORIES SECTION ==================== -->
+        <section id="categories" class="py-24 bg-ivory-100 border-y border-ivory-300/70">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-14 reveal-up">
+                    <span class="text-xs font-bold uppercase tracking-[0.25em] text-champagne-600 block mb-2">Department Directory</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-obsidian-900 mb-3">
+                        Shop by Category
+                    </h2>
+                    <p class="text-obsidian-700/80 text-sm sm:text-base">
+                        Browse our refined wardrobe essentials across eight signature departments.
+                    </p>
+                </div>
+
+                <!-- 8 Category Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- 1. Men's Clothing -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=600&q=80" alt="Men's Clothing" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=Mens+Clothing'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Men's Clothing</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Modern tailoring & refined menswear staples.</p>
+                            <a href="#products" data-nav-filter="men" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 2. Women's Clothing -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707c03?auto=format&fit=crop&w=600&q=80" alt="Women's Clothing" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=Womens+Clothing'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Women's Clothing</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Fluid silhouettes, silk separates & coats.</p>
+                            <a href="#products" data-nav-filter="women" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 3. Shirts -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80" alt="Luxury Shirts" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=Shirts'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Shirts</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Crisp poplin button-downs & relaxed linens.</p>
+                            <a href="#products" data-nav-filter="tops" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 4. T-Shirts -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80" alt="Supima Cotton T-Shirts" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=T-Shirts'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">T-Shirts</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Heavyweight organic Supima cotton basics.</p>
+                            <a href="#products" data-nav-filter="tops" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 5. Jeans & Trousers -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80" alt="Jeans and Tailored Trousers" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=Jeans+Trousers'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Jeans & Trousers</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Japanese selvedge denim & pleated trousers.</p>
+                            <a href="#products" data-nav-filter="bottoms" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 6. Dresses -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80" alt="Editorial Dresses" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=Dresses'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Dresses</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Bias-cut satin midis & draped evening gowns.</p>
+                            <a href="#products" data-nav-filter="women" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 7. Jackets -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80" alt="Structured Jackets & Coats" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=Jackets'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Jackets</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Supple leather bombers, blazers & trenches.</p>
+                            <a href="#products" data-nav-filter="outerwear" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 8. Accessories -->
+                    <div class="reveal-up group bg-white rounded-2xl overflow-hidden border border-ivory-300/80 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div class="h-56 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80" alt="Leather Bags & Accessories" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://placehold.co/500x400/EDE7DD/111010?text=Accessories'">
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Accessories</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-1 mb-4">Full-grain leather totes, scarves & eyewear.</p>
+                            <a href="#products" data-nav-filter="accessories" class="quick-filter-link inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-[0.18em] text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                                <span>Shop Now</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 6. PRODUCTS SHOWCASE SECTION (10 CURATED ITEMS) ==================== -->
+        <section id="products" class="py-24 bg-ivory-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 reveal-up">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-champagne-600 block mb-2">Atelier Catalogue</span>
+                        <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-obsidian-900">
+                            Signature Pieces
+                        </h2>
+                    </div>
+
+                    <!-- Interactive Filter Pills -->
+                    <div class="flex flex-wrap gap-2" role="tablist" aria-label="Product Filter">
+                        <button class="prod-filter-btn active px-4 py-2 text-xs font-bold uppercase tracking-widest bg-obsidian-900 text-ivory-50 transition-all" data-filter="all">All (10)</button>
+                        <button class="prod-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-widest bg-ivory-200/70 text-obsidian-800 hover:bg-obsidian-900 hover:text-ivory-50 transition-all" data-filter="women">Women</button>
+                        <button class="prod-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-widest bg-ivory-200/70 text-obsidian-800 hover:bg-obsidian-900 hover:text-ivory-50 transition-all" data-filter="men">Men</button>
+                        <button class="prod-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-widest bg-ivory-200/70 text-obsidian-800 hover:bg-obsidian-900 hover:text-ivory-50 transition-all" data-filter="outerwear">Outerwear</button>
+                        <button class="prod-filter-btn px-4 py-2 text-xs font-bold uppercase tracking-widest bg-ivory-200/70 text-obsidian-800 hover:bg-obsidian-900 hover:text-ivory-50 transition-all" data-filter="accessories">Accessories</button>
+                    </div>
+                </div>
+
+                <!-- Responsive Product Grid -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+                    <!-- Rendered dynamically via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 7. SPECIAL OFFERS & PROMOTIONAL BANNER ==================== -->
+        <section id="offers" class="py-20 bg-obsidian-900 text-ivory-50 relative overflow-hidden">
+            <!-- Marquee Ribbon -->
+            <div class="border-y border-ivory-100/15 py-3 mb-16 overflow-hidden whitespace-nowrap bg-obsidian-800/60">
+                <div class="inline-block animate-marquee text-xs uppercase tracking-[0.3em] text-champagne-400 font-semibold">
+                    LIMITED-TIME ARCHIVE SALE: UP TO 40% OFF &nbsp;✦&nbsp; BUY 2 GET 1 FREE ON ESSENTIALS &nbsp;✦&nbsp; CODE: VERA20 FOR EXTRA 20% OFF &nbsp;✦&nbsp; LIMITED-TIME ARCHIVE SALE: UP TO 40% OFF &nbsp;✦&nbsp; BUY 2 GET 1 FREE ON ESSENTIALS &nbsp;✦&nbsp; CODE: VERA20 FOR EXTRA 20% OFF &nbsp;✦&nbsp;
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    <!-- Left Offer Copy & Cards -->
+                    <div class="lg:col-span-7 reveal-left">
+                        <span class="inline-block px-3.5 py-1 bg-champagne-500 text-obsidian-900 text-[11px] font-bold uppercase tracking-[0.22em] mb-5">
+                            Seasonal Private Event
+                        </span>
+                        <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-tight mb-5">
+                            The Autumn Archive Sale — <span class="italic text-champagne-400 font-normal">Up to 40% Off</span>
+                        </h2>
+                        <p class="text-ivory-200/80 text-base leading-relaxed mb-8 max-w-xl">
+                            Enjoy exclusive seasonal reductions across select outerwear, Italian knitwear, and signature leather accessories. Plus, unlock our curated bundle privilege below.
+                        </p>
+
+                        <!-- 3 Offer Highlights -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-9">
+                            <div class="p-4 rounded-xl bg-obsidian-800 border border-ivory-100/15">
+                                <p class="text-champagne-400 font-serif text-2xl font-bold">Buy 2 Get 1</p>
+                                <p class="text-xs text-ivory-200/75 mt-1">On all organic cotton tees & essentials</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-obsidian-800 border border-ivory-100/15">
+                                <p class="text-champagne-400 font-serif text-2xl font-bold">30% Off</p>
+                                <p class="text-xs text-ivory-200/75 mt-1">Tailored wool blazers & eveningwear</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-obsidian-800 border border-ivory-100/15">
+                                <p class="text-champagne-400 font-serif text-2xl font-bold">Free Gift</p>
+                                <p class="text-xs text-ivory-200/75 mt-1">Silk pocket square on orders $250+</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-4">
+                            <a href="#products" data-nav-filter="sale" class="quick-filter-link px-9 py-4 bg-champagne-500 hover:bg-champagne-400 text-obsidian-900 text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 shadow-lg">
+                                Shop Offers
+                            </a>
+                            <button id="copy-promo-btn" class="px-6 py-4 border border-ivory-100/30 hover:border-champagne-400 text-ivory-50 text-xs font-semibold uppercase tracking-[0.2em] transition-colors flex items-center space-x-2">
+                                <span>Code: VERA20</span>
+                                <i class="fa-regular fa-copy text-champagne-400"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Campaign Image -->
+                    <div class="lg:col-span-5 reveal-right">
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-ivory-100/15 aspect-[4/5]">
+                            <img 
+                                src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=800&q=85" 
+                                alt="Editorial Fashion Campaign Offer" 
+                                loading="lazy"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
+                                onerror="this.src='https://placehold.co/600x750/2E2C2A/FCFBF9?text=Autumn+Archive+Sale'"
+                            >
+                            <div class="absolute bottom-5 left-5 right-5 glass-badge p-4 rounded-xl text-obsidian-900 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-widest text-champagne-600">Ends Sunday Midnight</p>
+                                    <p class="font-serif text-lg font-bold">Complimentary Express Delivery</p>
+                                </div>
+                                <span class="px-3 py-1 bg-obsidian-900 text-ivory-50 text-xs font-bold uppercase">40% OFF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 8. ABOUT THE BRAND SECTION ==================== -->
+        <section id="about" class="py-24 bg-ivory-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                    <!-- Left Lifestyle Photography -->
+                    <div class="lg:col-span-6 reveal-left">
+                        <div class="relative">
+                            <div class="rounded-2xl overflow-hidden shadow-xl aspect-[4/5]">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=85" 
+                                    alt="Inside the Maison Véra minimalist fashion studio and atelier" 
+                                    loading="lazy"
+                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
+                                    onerror="this.src='https://placehold.co/700x850/EDE7DD/111010?text=Maison+Vera+Atelier'"
+                                >
+                            </div>
+                            <div class="hidden sm:block absolute -bottom-6 -right-6 bg-obsidian-900 text-ivory-50 p-7 rounded-2xl shadow-2xl max-w-xs">
+                                <p class="font-serif italic text-2xl text-champagne-400 mb-2">"Quiet luxury, enduring form."</p>
+                                <p class="text-xs text-ivory-200/75 leading-relaxed">
+                                    Designed in Milan & New York with certified traceable textiles.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Brand Story -->
+                    <div class="lg:col-span-6 reveal-right">
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-champagne-600 block mb-3">Our Philosophy</span>
+                        <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-obsidian-900 leading-tight mb-6">
+                            Crafted for Longevity, Designed with <span class="italic font-normal text-champagne-600">Modern Restraint</span>
+                        </h2>
+                        <p class="text-obsidian-700/85 text-base leading-relaxed mb-5">
+                            Founded on the belief that true luxury whispers rather than shouts, <strong>MAISON VÉRA</strong> creates timeless garments that transcend fleeting seasonal cycles. Every coat, shirt, and dress is patterned with architectural precision to drape naturally and move effortlessly with you.
+                        </p>
+                        <p class="text-obsidian-700/85 text-base leading-relaxed mb-8">
+                            We collaborate directly with family-owned mills in Como and Biella, prioritizing organic flax linens, Mulberry silks, and responsible merino wools—ensuring every piece feels as extraordinary against the skin as it looks in motion.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-6 pt-6 border-t border-obsidian-900/10">
+                            <div>
+                                <h3 class="font-serif text-xl font-bold text-obsidian-900 mb-1">Artisanal Tailoring</h3>
+                                <p class="text-xs text-obsidian-700/75 leading-relaxed">Hand-finished seams, horn buttons, and custom-woven linings.</p>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-xl font-bold text-obsidian-900 mb-1">Conscious Luxury</h3>
+                                <p class="text-xs text-obsidian-700/75 leading-relaxed">Small-batch production runs to eliminate textile waste.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 9. CUSTOMER REVIEWS CAROUSEL ==================== -->
+        <section id="reviews" class="py-24 bg-ivory-100 border-t border-ivory-300/70">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-xl mx-auto mb-14 reveal-up">
+                    <span class="text-xs font-bold uppercase tracking-[0.25em] text-champagne-600 block mb-2">Client Testimonials</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-obsidian-900">
+                        Worn & Loved Worldwide
+                    </h2>
+                </div>
+
+                <!-- Review Card Carousel -->
+                <div class="reveal-up bg-white rounded-3xl p-8 sm:p-12 lg:p-14 shadow-lg border border-ivory-300/70">
+                    <div id="testimonial-display" class="transition-opacity duration-300">
+                        <!-- Injected dynamically via JS -->
+                    </div>
+
+                    <div class="flex items-center justify-between mt-10 pt-6 border-t border-ivory-200">
+                        <div id="testimonial-dots" class="flex items-center space-x-2"></div>
+                        <div class="flex items-center space-x-3">
+                            <button id="prev-testimonial" aria-label="Previous Review" class="w-11 h-11 rounded-full border border-obsidian-900/20 hover:bg-obsidian-900 hover:text-ivory-50 flex items-center justify-center transition-colors">
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                            </button>
+                            <button id="next-testimonial" aria-label="Next Review" class="w-11 h-11 rounded-full bg-obsidian-900 text-ivory-50 hover:bg-champagne-600 flex items-center justify-center transition-colors">
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 10. SHOPPING FEATURES BAR ==================== -->
+        <section aria-label="Shopping Benefits" class="py-16 bg-ivory-50 border-y border-ivory-300/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-full bg-ivory-200 text-obsidian-900 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-truck-fast text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-obsidian-900">Free Shipping</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-0.5">Complimentary express delivery on orders over $150.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-full bg-ivory-200 text-obsidian-900 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-shield-halved text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-obsidian-900">Secure Payment</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-0.5">256-bit encrypted checkout with major cards & Apple Pay.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-full bg-ivory-200 text-obsidian-900 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-rotate-left text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-obsidian-900">Easy Returns</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-0.5">30-day effortless exchanges and prepaid return labels.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-full bg-ivory-200 text-obsidian-900 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-award text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-obsidian-900">Quality Products</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-0.5">Crafted from certified Italian & Japanese luxury textiles.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-full bg-ivory-200 text-obsidian-900 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-headset text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-obsidian-900">Client Concierge</h3>
+                            <p class="text-xs text-obsidian-700/75 mt-0.5">Dedicated styling & sizing assistance 7 days a week.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 11. CONTACT & CLIENT CONCIERGE SECTION ==================== -->
+        <section id="contact" class="py-24 bg-ivory-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    <!-- Left Store Details -->
+                    <div class="lg:col-span-5 reveal-left">
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-champagne-600 block mb-2">Get in Touch</span>
+                        <h2 class="font-serif text-4xl sm:text-5xl font-semibold text-obsidian-900 mb-5">
+                            Flagship & Concierge
+                        </h2>
+                        <p class="text-obsidian-700/80 text-sm sm:text-base leading-relaxed mb-8">
+                            Have a question about garment sizing, private styling appointments, or an existing order? Our client advisors are delighted to assist.
+                        </p>
+
+                        <div class="space-y-5 text-sm">
+                            <div class="flex items-start space-x-3.5">
+                                <i class="fa-solid fa-location-dot text-champagne-600 mt-1"></i>
+                                <div>
+                                    <p class="font-bold text-obsidian-900">SoHo Flagship Boutique</p>
+                                    <p class="text-obsidian-700/80">148 Mercer Street, New York, NY 10012</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3.5">
+                                <i class="fa-solid fa-phone text-champagne-600 mt-1"></i>
+                                <div>
+                                    <p class="font-bold text-obsidian-900">Client Services</p>
+                                    <a href="tel:+12125550188" class="text-obsidian-700/80 hover:text-obsidian-900">+1 (212) 555-0188</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3.5">
+                                <i class="fa-solid fa-envelope text-champagne-600 mt-1"></i>
+                                <div>
+                                    <p class="font-bold text-obsidian-900">Email Inquiries</p>
+                                    <a href="mailto:concierge@maisonvera.com" class="text-obsidian-700/80 hover:text-obsidian-900">concierge@maisonvera.com</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4 mt-8 pt-6 border-t border-obsidian-900/10">
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-full border border-obsidian-900/20 hover:bg-obsidian-900 hover:text-ivory-50 flex items-center justify-center transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="w-10 h-10 rounded-full border border-obsidian-900/20 hover:bg-obsidian-900 hover:text-ivory-50 flex items-center justify-center transition-colors"><i class="fa-brands fa-pinterest-p"></i></a>
+                            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="w-10 h-10 rounded-full border border-obsidian-900/20 hover:bg-obsidian-900 hover:text-ivory-50 flex items-center justify-center transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="w-10 h-10 rounded-full border border-obsidian-900/20 hover:bg-obsidian-900 hover:text-ivory-50 flex items-center justify-center transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Right Interactive Contact Form -->
+                    <div class="lg:col-span-7 reveal-right">
+                        <form id="contact-form" class="bg-white p-8 sm:p-10 rounded-3xl shadow-lg border border-ivory-300/80 space-y-6">
+                            <h3 class="font-serif text-2xl sm:text-3xl font-semibold text-obsidian-900">Send a Message</h3>
+                            
+                            <div>
+                                <label for="contact-name" class="block text-[11px] font-bold uppercase tracking-[0.2em] text-obsidian-700 mb-2">Full Name</label>
+                                <input type="text" id="contact-name" required placeholder="Camille Laurent" class="editorial-input w-full py-3 bg-transparent text-sm text-obsidian-900 placeholder-obsidian-700/40">
+                            </div>
+
+                            <div>
+                                <label for="contact-email" class="block text-[11px] font-bold uppercase tracking-[0.2em] text-obsidian-700 mb-2">Email Address</label>
+                                <input type="email" id="contact-email" required placeholder="camille@example.com" class="editorial-input w-full py-3 bg-transparent text-sm text-obsidian-900 placeholder-obsidian-700/40">
+                            </div>
+
+                            <div>
+                                <label for="contact-message" class="block text-[11px] font-bold uppercase tracking-[0.2em] text-obsidian-700 mb-2">Message</label>
+                                <textarea id="contact-message" rows="4" required placeholder="Tell us how we can assist with your wardrobe or order..." class="editorial-input w-full py-3 bg-transparent text-sm text-obsidian-900 placeholder-obsidian-700/40 resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full sm:w-auto px-10 py-4 bg-obsidian-900 hover:bg-champagne-600 text-ivory-50 text-xs font-bold uppercase tracking-[0.22em] transition-all duration-300 shadow-md">
+                                Send Inquiry
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== 12. LUXURY FOOTER ==================== -->
+    <footer class="bg-obsidian-900 text-ivory-100 pt-16 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-14 border-b border-ivory-100/10">
+                <!-- Col 1: Brand & Newsletter -->
+                <div class="lg:col-span-2">
+                    <a href="#home" class="font-serif text-2xl sm:text-3xl font-bold tracking-[0.22em] text-white uppercase block mb-4">
+                        MAISON VÉRA
+                    </a>
+                    <p class="text-sm text-ivory-200/70 leading-relaxed max-w-sm mb-6">
+                        Join our private list for early access to seasonal runway drops, archive sales, and styling notes.
+                    </p>
+                    <form id="footer-newsletter" class="flex max-w-md border-b border-ivory-100/40 pb-2">
+                        <input type="email" required placeholder="Enter your email address" aria-label="Newsletter email" class="bg-transparent flex-1 text-sm text-white placeholder-ivory-200/45 focus:outline-none">
+                        <button type="submit" class="text-xs font-bold uppercase tracking-[0.2em] text-champagne-400 hover:text-white transition-colors pl-3">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-4">Navigation</h4>
+                    <ul class="space-y-2.5 text-sm text-ivory-200/75">
+                        <li><a href="#home" class="hover:text-champagne-400 transition-colors">Home</a></li>
+                        <li><a href="#collections" class="hover:text-champagne-400 transition-colors">Collections</a></li>
+                        <li><a href="#products" class="hover:text-champagne-400 transition-colors">New Arrivals</a></li>
+                        <li><a href="#offers" class="hover:text-champagne-400 transition-colors">Special Offers</a></li>
+                        <li><a href="#about" class="hover:text-champagne-400 transition-colors">Our Story</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Shop Categories -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-4">Categories</h4>
+                    <ul class="space-y-2.5 text-sm text-ivory-200/75">
+                        <li><a href="#products" data-nav-filter="women" class="quick-filter-link hover:text-champagne-400 transition-colors">Women's Ready-to-Wear</a></li>
+                        <li><a href="#products" data-nav-filter="men" class="quick-filter-link hover:text-champagne-400 transition-colors">Men's Tailoring</a></li>
+                        <li><a href="#products" data-nav-filter="outerwear" class="quick-filter-link hover:text-champagne-400 transition-colors">Jackets & Coats</a></li>
+                        <li><a href="#products" data-nav-filter="accessories" class="quick-filter-link hover:text-champagne-400 transition-colors">Leather Accessories</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Customer Support -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-white mb-4">Client Care</h4>
+                    <ul class="space-y-2.5 text-sm text-ivory-200/75">
+                        <li><a href="#contact" class="hover:text-champagne-400 transition-colors">Contact Concierge</a></li>
+                        <li><a href="#contact" class="hover:text-champagne-400 transition-colors">Shipping & Delivery</a></li>
+                        <li><a href="#contact" class="hover:text-champagne-400 transition-colors">Returns & Exchanges</a></li>
+                        <li><a href="#reviews" class="hover:text-champagne-400 transition-colors">Client Reviews</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright & Signature -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-ivory-200/60 gap-4">
+                <p>&copy; <span id="footer-year">2026</span> MAISON VÉRA. All rights reserved.</p>
+                <div class="flex items-center space-x-5">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:text-champagne-400 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="hover:text-champagne-400 transition-colors"><i class="fa-brands fa-pinterest"></i></a>
+                    <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="hover:text-champagne-400 transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+                <p class="tracking-widest uppercase text-[11px] text-champagne-400 font-semibold">Designed with style</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SHOPPING BAG DRAWER ==================== -->
+    <div id="drawer-backdrop" class="fixed inset-0 z-50 bg-obsidian-900/60 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300" aria-hidden="true"></div>
+
+    <aside id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-ivory-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col" aria-label="Shopping Bag">
+        <div class="p-6 bg-white border-b border-ivory-300 flex items-center justify-between">
+            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Shopping Bag</h3>
+            <button id="cart-close-btn" aria-label="Close Shopping Bag" class="w-9 h-9 rounded-full hover:bg-ivory-200 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div id="cart-list" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+
+        <div class="p-6 bg-white border-t border-ivory-300">
+            <div class="flex justify-between text-xs uppercase tracking-wider text-obsidian-700 mb-2">
+                <span>Shipping</span>
+                <span id="shipping-label" class="font-semibold text-obsidian-900">Calculated at checkout</span>
+            </div>
+            <div class="flex justify-between items-baseline text-base font-bold text-obsidian-900 pt-3 border-t border-ivory-200 mb-5">
+                <span class="uppercase text-xs tracking-widest">Estimated Total</span>
+                <span id="cart-total-price" class="font-serif text-2xl">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="w-full py-4 bg-obsidian-900 hover:bg-champagne-600 disabled:opacity-40 disabled:cursor-not-allowed text-ivory-50 text-xs font-bold uppercase tracking-[0.2em] transition-colors">
+                Proceed to Checkout
+            </button>
+        </div>
+    </aside>
+
+    <!-- ==================== WISHLIST DRAWER ==================== -->
+    <aside id="wishlist-drawer" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-ivory-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col" aria-label="Saved Wishlist">
+        <div class="p-6 bg-white border-b border-ivory-300 flex items-center justify-between">
+            <h3 class="font-serif text-2xl font-semibold text-obsidian-900">Saved Pieces</h3>
+            <button id="wishlist-close-btn" aria-label="Close Wishlist" class="w-9 h-9 rounded-full hover:bg-ivory-200 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div id="wishlist-list" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+    </aside>
+
+    <!-- ==================== TOAST NOTIFICATION ==================== -->
+    <div id="toast" role="status" aria-live="polite" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-obsidian-900 text-ivory-50 px-5 py-3.5 shadow-2xl border border-champagne-500/40 flex items-center space-x-3">
+            <i class="fa-solid fa-check text-champagne-400 text-xs"></i>
+            <p id="toast-text" class="text-xs uppercase tracking-wider font-semibold">Added to your bag</p>
+        </div>
+    </div>
+
+    <!-- ==================== VANILLA JAVASCRIPT INTERACTIVITY ==================== -->
+    <script>
+        // 1. PRODUCT CATALOGUE DATA (10 Editorial Products)
+        const products = [
+            {
+                id: 101,
+                name: "Sculpted Double-Breasted Trench",
+                category: "outerwear",
+                gender: "women",
+                originalPrice: 340,
+                price: 255,
+                discount: "25% OFF",
+                badge: "Bestseller",
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 102,
+                name: "Italian Linen Relaxed Blazer",
+                category: "outerwear",
+                gender: "men",
+                originalPrice: 290,
+                price: 220,
+                discount: "24% OFF",
+                badge: "New",
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 103,
+                name: "Bias-Cut Mulberry Silk Midi Dress",
+                category: "women",
+                gender: "women",
+                originalPrice: 260,
+                price: 195,
+                discount: "25% OFF",
+                badge: "Sale",
+                rating: 5.0,
+                image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 104,
+                name: "Heavyweight Supima Cotton Tee",
+                category: "men",
+                gender: "men",
+                originalPrice: 75,
+                price: 55,
+                discount: "27% OFF",
+                badge: "Bestseller",
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 105,
+                name: "Pleated Wide-Leg Wool Trousers",
+                category: "women",
+                gender: "women",
+                originalPrice: 195,
+                price: 155,
+                discount: "20% OFF",
+                badge: "New",
+                rating: 4.7,
+                image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 106,
+                name: "Artisanal Full-Grain Leather Tote",
+                category: "accessories",
+                gender: "women",
+                originalPrice: 420,
+                price: 315,
+                discount: "25% OFF",
+                badge: "Bestseller",
+                rating: 5.0,
+                image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 107,
+                name: "Brushed Cashmere Crewneck Knit",
+                category: "men",
+                gender: "men",
+                originalPrice: 240,
+                price: 175,
+                discount: "27% OFF",
+                badge: "Sale",
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 108,
+                name: "Architectural Acetate Sunglasses",
+                category: "accessories",
+                gender: "men",
+                originalPrice: 165,
+                price: 125,
+                discount: "24% OFF",
+                badge: "New",
+                rating: 4.8,
+                image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 109,
+                name: "Cropped Suede Moto Jacket",
+                category: "outerwear",
+                gender: "women",
+                originalPrice: 390,
+                price: 290,
+                discount: "26% OFF",
+                badge: "Sale",
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=85"
+            },
+            {
+                id: 110,
+                name: "Selvedge Tapered Denim Jeans",
+                category: "men",
+                gender: "men",
+                originalPrice: 185,
+                price: 140,
+                discount: "24% OFF",
+                badge: "Bestseller",
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=700&q=85"
+            }
+        ];
+
+        // 2. CUSTOMER TESTIMONIALS DATA
+        const testimonials = [
+            {
+                name: "Amélie Laurent",
+                location: "Paris, France",
+                product: "Sculpted Double-Breasted Trench",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+                rating: 5,
+                quote: "The drape of the Double-Breasted Trench rivals couture houses three times the price. Every seam and horn button feels thoughtfully considered."
+            },
+            {
+                name: "Julian Mercer",
+                location: "London, UK",
+                product: "Italian Linen Relaxed Blazer",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+                rating: 5,
+                quote: "Finally a brand that understands understated menswear. The Italian Linen Blazer breathes effortlessly while maintaining a sharp shoulder line."
+            },
+            {
+                name: "Nadia Al-Mansoor",
+                location: "New York, NY",
+                product: "Bias-Cut Mulberry Silk Midi Dress",
+                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
+                rating: 5,
+                quote: "I wore the Mulberry Silk Midi Dress to an evening gallery opening and received endless compliments. Packaging and express delivery were seamless."
+            }
+        ];
+
+        // 3. STATE MANAGEMENT
+        let cart = [];
+        let wishlist = [];
+        let activeFilter = 'all';
+        let testimonialIndex = 0;
+
+        // 4. PRELOADER DISMISSAL
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader-screen').classList.add('fade-out');
+            }, 600);
+        });
+
+        // 5. RENDER PRODUCTS GRID
+        const productGrid = document.getElementById('product-grid');
+        const filterButtons = document.querySelectorAll('.prod-filter-btn');
+
+        function renderProducts(filter = 'all') {
+            activeFilter = filter;
+            let filtered = products;
+
+            if (filter === 'women') filtered = products.filter(p => p.gender === 'women');
+            else if (filter === 'men') filtered = products.filter(p => p.gender === 'men');
+            else if (filter === 'outerwear') filtered = products.filter(p => p.category === 'outerwear');
+            else if (filter === 'accessories') filtered = products.filter(p => p.category === 'accessories');
+            else if (filter === 'sale') filtered = products.filter(p => p.badge === 'Sale' || p.originalPrice > p.price);
+
+            productGrid.innerHTML = filtered.map(product => {
+                const isSaved = wishlist.some(item => item.id === product.id);
+                const badgeStyle = product.badge === 'Sale' 
+                    ? 'bg-obsidian-900 text-ivory-50' 
+                    : product.badge === 'New' 
+                        ? 'bg-champagne-500 text-obsidian-900' 
+                        : 'bg-white/95 text-obsidian-900';
+
+                return `
+                    <article class="product-card group flex flex-col">
+                        <div class="relative overflow-hidden rounded-xl bg-ivory-200 aspect-[3/4] mb-4">
+                            <img 
+                                src="${product.image}" 
+                                alt="${product.name}" 
+                                loading="lazy"
+                                class="product-img w-full h-full object-cover transition-transform duration-700 ease-out"
+                                onerror="this.src='https://placehold.co/600x800/EDE7DD/111010?text=${encodeURIComponent(product.name)}'"
+                            >
+                            
+                            <!-- Top Badges -->
+                            <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+                                <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${badgeStyle} shadow-xs">
+                                    ${product.badge}
+                                </span>
+                                <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest bg-ivory-50/90 text-champagne-600">
+                                    ${product.discount}
+                                </span>
+                            </div>
+
+                            <!-- Wishlist Heart Button -->
+                            <button 
+                                onclick="toggleWishlist(${product.id})" 
+                                aria-label="Save ${product.name} to Wishlist"
+                                class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 hover:bg-obsidian-900 text-obsidian-900 hover:text-white flex items-center justify-center shadow-sm transition-colors">
+                                <i class="${isSaved ? 'fa-solid fa-heart text-rose-600' : 'fa-regular fa-heart'} text-sm"></i>
+                            </button>
+
+                            <!-- Quick Add to Cart Overlay -->
+                            <div class="quick-add-bar absolute inset-x-3 bottom-3 transform translate-y-4 opacity-0 transition-all duration-300">
+                                <button 
+                                    onclick="addToCart(${product.id})"
+                                    class="w-full py-3 bg-obsidian-900/95 hover:bg-champagne-600 text-ivory-50 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-md transition-colors shadow-lg">
+                                    + Add to Bag
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Product Metadata -->
+                        <div class="flex items-center justify-between text-xs text-obsidian-700/75 mb-1">
+                            <span class="uppercase tracking-wider font-medium">${product.gender} • ${product.category}</span>
+                            <span class="flex items-center space-x-1 text-obsidian-900 font-semibold">
+                                <i class="fa-solid fa-star text-champagne-500 text-[10px]"></i>
+                                <span>${product.rating}</span>
+                            </span>
+                        </div>
+
+                        <h3 class="font-serif text-xl font-semibold text-obsidian-900 group-hover:text-champagne-600 transition-colors">
+                            ${product.name}
+                        </h3>
+
+                        <div class="flex items-center justify-between mt-1.5">
+                            <div class="flex items-baseline space-x-2">
+                                <span class="text-base font-bold text-obsidian-900">$${product.price.toFixed(2)}</span>
+                                <span class="text-xs text-obsidian-700/50 line-through">$${product.originalPrice.toFixed(2)}</span>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="lg:hidden text-[11px] font-bold uppercase tracking-wider underline underline-offset-4 text-obsidian-900">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // Filter Pill Handlers
+        function setActiveFilterButton(filterValue) {
+            filterButtons.forEach(btn => {
+                if (btn.getAttribute('data-filter') === filterValue) {
+                    btn.classList.add('active', 'bg-obsidian-900', 'text-ivory-50');
+                    btn.classList.remove('bg-ivory-200/70', 'text-obsidian-800');
+                } else {
+                    btn.classList.remove('active', 'bg-obsidian-900', 'text-ivory-50');
+                    btn.classList.add('bg-ivory-200/70', 'text-obsidian-800');
+                }
+            });
+        }
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+                setActiveFilterButton(filter);
+                renderProducts(filter);
+            });
+        });
+
+        // Quick Filter Links from Nav, Collections & Categories
+        document.querySelectorAll('.quick-filter-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const filter = link.getAttribute('data-nav-filter') || 'all';
+                const normalized = ['men', 'women', 'outerwear', 'accessories', 'sale'].includes(filter) ? filter : 'all';
+                setActiveFilterButton(normalized);
+                renderProducts(normalized);
+            });
+        });
+
+        // 6. CART & WISHLIST INTERACTIVITY
+        const drawerBackdrop = document.getElementById('drawer-backdrop');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const wishlistDrawer = document.getElementById('wishlist-drawer');
+
+        function openPanel(panel) {
+            drawerBackdrop.classList.remove('hidden');
+            setTimeout(() => drawerBackdrop.classList.remove('opacity-0'), 10);
+            panel.classList.remove('translate-x-full');
+        }
+
+        function closePanels() {
+            drawerBackdrop.classList.add('opacity-0');
+            cartDrawer.classList.add('translate-x-full');
+            wishlistDrawer.classList.add('translate-x-full');
+            setTimeout(() => drawerBackdrop.classList.add('hidden'), 300);
+        }
+
+        document.getElementById('cart-open-btn').addEventListener('click', () => openPanel(cartDrawer));
+        document.getElementById('cart-close-btn').addEventListener('click', closePanels);
+        document.getElementById('wishlist-open-btn').addEventListener('click', () => openPanel(wishlistDrawer));
+        document.getElementById('wishlist-close-btn').addEventListener('click', closePanels);
+        drawerBackdrop.addEventListener('click', closePanels);
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartDisplay();
+            showToast(`Added "${product.name}" to your bag`);
+        }
+
+        function updateCartQty(productId, delta) {
+            const idx = cart.findIndex(item => item.id === productId);
+            if (idx === -1) return;
+            cart[idx].qty += delta;
+            if (cart[idx].qty <= 0) cart.splice(idx, 1);
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartList = document.getElementById('cart-list');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotalPrice = document.getElementById('cart-total-price');
+            const shippingLabel = document.getElementById('shipping-label');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            cartCount.textContent = totalQty;
+            cartTotalPrice.textContent = `$${totalAmount.toFixed(2)}`;
+            shippingLabel.textContent = totalAmount >= 150 ? 'Complimentary Express' : totalAmount > 0 ? '$15.00 Standard' : 'Calculated at checkout';
+
+            if (cart.length === 0) {
+                checkoutBtn.disabled = true;
+                cartList.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center py-12">
+                        <i class="fa-solid fa-bag-shopping text-3xl text-obsidian-700/30 mb-3"></i>
+                        <p class="font-serif text-xl font-semibold text-obsidian-900">Your shopping bag is empty</p>
+                        <p class="text-xs text-obsidian-700/70 mt-1 max-w-xs">Explore our curated collections to add pieces to your bag.</p>
+                    </div>
+                `;
+            } else {
+                checkoutBtn.disabled = false;
+                cartList.innerHTML = cart.map(item => `
+                    <div class="flex items-center gap-4 p-3.5 bg-white border border-ivory-300 rounded-xl">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-20 object-cover rounded-lg shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-serif text-base font-bold text-obsidian-900 truncate">${item.name}</h4>
+                            <p class="text-xs font-semibold text-champagne-600 mt-0.5">$${(item.price * item.qty).toFixed(2)}</p>
+                            <div class="flex items-center space-x-2.5 mt-2">
+                                <button onclick="updateCartQty(${item.id}, -1)" aria-label="Decrease quantity" class="w-6 h-6 border border-obsidian-900/20 text-xs font-bold hover:bg-obsidian-900 hover:text-white transition-colors">-</button>
+                                <span class="text-xs font-bold">${item.qty}</span>
+                                <button onclick="updateCartQty(${item.id}, 1)" aria-label="Increase quantity" class="w-6 h-6 border border-obsidian-900/20 text-xs font-bold hover:bg-obsidian-900 hover:text-white transition-colors">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleWishlist(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIdx = wishlist.findIndex(item => item.id === productId);
+            if (existingIdx > -1) {
+                wishlist.splice(existingIdx, 1);
+                showToast(`Removed "${product.name}" from saved pieces`);
+            } else {
+                wishlist.push(product);
+                showToast(`Saved "${product.name}" to your wishlist`);
+            }
+            updateWishlistDisplay();
+            renderProducts(activeFilter);
+        }
+
+        function updateWishlistDisplay() {
+            const wishlistList = document.getElementById('wishlist-list');
+            const wishlistCount = document.getElementById('wishlist-count');
+            wishlistCount.textContent = wishlist.length;
+
+            if (wishlist.length === 0) {
+                wishlistList.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center py-12">
+                        <i class="fa-regular fa-heart text-3xl text-obsidian-700/30 mb-3"></i>
+                        <p class="font-serif text-xl font-semibold text-obsidian-900">No saved pieces yet</p>
+                        <p class="text-xs text-obsidian-700/70 mt-1 max-w-xs">Tap the heart icon on any garment to curate your personal wishlist.</p>
+                    </div>
+                `;
+            } else {
+                wishlistList.innerHTML = wishlist.map(item => `
+                    <div class="flex items-center gap-4 p-3.5 bg-white border border-ivory-300 rounded-xl">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-20 object-cover rounded-lg shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-serif text-base font-bold text-obsidian-900 truncate">${item.name}</h4>
+                            <p class="text-xs font-bold text-obsidian-900 mt-0.5">$${item.price.toFixed(2)}</p>
+                            <div class="flex items-center space-x-3 mt-2">
+                                <button onclick="addToCart(${item.id}); closePanels();" class="text-[11px] font-bold uppercase tracking-wider underline underline-offset-4 text-obsidian-900 hover:text-champagne-600">
+                                    Move to Bag
+                                </button>
+                                <button onclick="toggleWishlist(${item.id})" class="text-[11px] text-obsidian-700/60 hover:text-rose-600">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (cart.length === 0) return;
+            cart = [];
+            updateCartDisplay();
+            closePanels();
+            showToast("Thank you! Your Maison Véra order confirmation has been sent.");
+        });
+
+        // 7. CUSTOMER REVIEWS SLIDER
+        const testimonialDisplay = document.getElementById('testimonial-display');
+        const testimonialDots = document.getElementById('testimonial-dots');
+
+        function renderTestimonial(idx) {
+            const item = testimonials[idx];
+            const stars = Array(item.rating).fill('<i class="fa-solid fa-star text-champagne-500 text-xs"></i>').join('');
+
+            testimonialDisplay.style.opacity = '0';
+            setTimeout(() => {
+                testimonialDisplay.innerHTML = `
+                    <div class="text-center max-w-2xl mx-auto">
+                        <div class="flex justify-center space-x-1 mb-5">${stars}</div>
+                        <blockquote class="font-serif italic text-2xl sm:text-3xl text-obsidian-900 leading-relaxed mb-7">
+                            "${item.quote}"
+                        </blockquote>
+                        <div class="flex items-center justify-center space-x-3.5">
+                            <img src="${item.avatar}" alt="${item.name}" class="w-12 h-12 rounded-full object-cover border border-champagne-500">
+                            <div class="text-left">
+                                <p class="font-serif text-lg font-bold text-obsidian-900 leading-none">${item.name}</p>
+                                <p class="text-[11px] uppercase tracking-wider text-obsidian-700/70 mt-1">${item.location} • Verified Buyer (${item.product})</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                testimonialDisplay.style.opacity = '1';
+            }, 160);
+
+            testimonialDots.innerHTML = testimonials.map((_, i) => `
+                <button onclick="goToTestimonial(${i})" aria-label="Review ${i + 1}" class="h-2 rounded-full transition-all duration-300 ${i === idx ? 'w-7 bg-obsidian-900' : 'w-2 bg-obsidian-900/25'}"></button>
+            `).join('');
+        }
+
+        function goToTestimonial(i) {
+            testimonialIndex = i;
+            renderTestimonial(testimonialIndex);
+        }
+
+        document.getElementById('prev-testimonial').addEventListener('click', () => {
+            testimonialIndex = (testimonialIndex - 1 + testimonials.length) % testimonials.length;
+            renderTestimonial(testimonialIndex);
+        });
+
+        document.getElementById('next-testimonial').addEventListener('click', () => {
+            testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+            renderTestimonial(testimonialIndex);
+        });
+
+        // 8. TOAST, COPY PROMO & FORM HANDLERS
+        let toastTimer;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').textContent = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3200);
+        }
+
+        document.getElementById('copy-promo-btn').addEventListener('click', () => {
+            const temp = document.createElement('input');
+            temp.value = 'VERA20';
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast('Promo code "VERA20" copied to clipboard!');
+        });
+
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            e.target.reset();
+            showToast('Your inquiry has been received by our Client Concierge.');
+        });
+
+        document.getElementById('footer-newsletter').addEventListener('submit', (e) => {
+            e.preventDefault();
+            e.target.reset();
+            showToast('Welcome to MAISON VÉRA Private Client List.');
+        });
+
+        // 9. MOBILE NAVIGATION & SCROLL REVEAL OBSERVER
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileIcon = document.getElementById('mobile-icon');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            const isHidden = mobileDrawer.classList.contains('hidden');
+            mobileDrawer.classList.toggle('hidden');
+            mobileMenuToggle.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+            mobileIcon.className = isHidden ? 'fa-solid fa-xmark text-lg' : 'fa-solid fa-bars text-lg';
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDrawer.classList.add('hidden');
+                mobileIcon.className = 'fa-solid fa-bars text-lg';
+            });
+        });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
+
+        // 10. INITIALIZE ON LOAD
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts('all');
+            renderTestimonial(0);
+            updateCartDisplay();
+            updateWishlistDisplay();
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
